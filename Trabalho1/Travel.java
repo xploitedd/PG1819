@@ -22,7 +22,12 @@ public class Travel {
             if (hc < 0 || (hc == 0 && mc < 0) || (hc == 0 && mc == 0 && sc < 0)) {
                 System.out.println("Partida > Chegada");
             } else {
+                sc = 60 - sc;
+                if (hc > 0)
+                    mc = 60 - mc;
 
+                if (sc > 0)
+                    mc = mc - 1
             }
         } else {
             System.out.println("Os valores apresentados não são válidos!");
