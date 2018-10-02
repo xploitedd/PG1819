@@ -4,14 +4,15 @@ public class Travel {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         System.out.print("Partida? ");
-        int hp = s.nextInt();
-        int mp = s.nextInt();
-        int sp = s.nextInt();
+        int hp = s.nextInt(); // Hora de partida
+        int mp = s.nextInt(); // Minuto de partida
+        int sp = s.nextInt(); // Segundo de partida
         System.out.print("Chegada? ");
-        int hc = s.nextInt();
-        int mc = s.nextInt();
-        int sc = s.nextInt();
+        int hc = s.nextInt(); // Hora de chegada
+        int mc = s.nextInt(); // Minuto de chegada
+        int sc = s.nextInt(); // Segundo de chegada
         
+        // Estas médias não podem ser feitas e portanto devem ser substituidas
         int mh = (hp + hc) / 2;
         int mms = (mp + mc + sp + sc) / 4;
         if (mh >= 0 && mh <= 23 || mms >= 0 && mms <= 59) {
