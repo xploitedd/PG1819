@@ -8,6 +8,7 @@ public class Dice {
         * 0 <= random < 1
         * 0 <= 6 * random < 6
         * 1 <= 6 * random + 1 < 7
+        * 1 <= (int) 6 * random + 1 <= 6
         */
 
         int pt = (int) (Math.random() * 6 + 1);
