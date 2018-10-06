@@ -14,10 +14,10 @@ public class Slope {
         if (x1 != v2) {
             v1 = (y1 - v2) / (x1 - v1);
             v2 = y1 - v1 * x1;
-            if (v2 > 0)
-                out = "y = " + v1 + "x + " + v2;
-            else
+            if (v2 == 0)
                 out = "y = " + v1 + "x";
+            else
+                out = "y = " + v1 + "x + " + v2;
         }
 
         System.out.println(out);
