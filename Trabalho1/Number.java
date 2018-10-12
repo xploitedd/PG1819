@@ -1,23 +1,14 @@
 import java.util.Scanner;
 
-public class Number {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        System.out.print("Valor (0..9999)? ");
-        int valor = s.nextInt();
-        String mensagemFinal = "O valor apresentado não se encontra entre 0 e 9999";
-        if (valor >= 0 && valor <= 9999) {
-            int vCopy = valor;
-            int milhares = (int) (valor / 1000);
-            valor = valor - milhares * 1000;
-            int centenas = (int) (valor / 100);
-            valor = valor - centenas * 100;
-            int dezenas =  (int) (valor / 10);
-            valor = valor - dezenas * 10;
-
-            mensagemFinal = vCopy + " = " + milhares + " milhar(es) + " + centenas + " centena(s) + " + dezenas + " dezena(s) + " + valor + " unidade(s).";
-        }
-
-        System.out.println(mensagemFinal);
-    }
+public class Number{
+	public static void main(String[] args){
+		System.out.print("Valor (0..9999)?	");
+		Scanner in = new Scanner(System.in);
+		int num = in.nextInt();
+		int numk = num/1000 ;
+		int numc = (num)/100 - (numk * 10);
+		int numd = (num)/10 - (numk * 100) - (numc * 10);
+		int numu = num - (numk * 1000) - (numc * 100) - (numd * 10);
+		System.out.print(num + " = " + numk + " milhar(es) + " + numc + " centena(s) + " + numd +  " dezena(s) + " + numu +" unidade(s)");
+	}
 }
