@@ -6,7 +6,7 @@ public class Programa {
 
         int[] vals = new int[10];
         int sum = 0, values = 0;
-        while (s.hasNextInt())
+        while (s.hasNextInt() && values < vals.length)
             sum += vals[values++] = s.nextInt();
 
         float avg = (values > 0) ? (float) sum / values : 0;

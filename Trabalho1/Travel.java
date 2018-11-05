@@ -1,35 +1,25 @@
 import java.util.Scanner;
 
-public class Travel{
-	public static void main(String[] args){
+public class Travel {
+	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		System.out.print("Partida? ");
-		int hp = in.nextInt();
-		int mp = in.nextInt();
-		int sp = in.nextInt();
+    	System.out.print("Partida ? ");
+		int hp = in.nextInt(), mp = in.nextInt(), sp = in.nextInt(); /* Não há verificação
+		dos dados introduzidos pois é dito no enunciado para assumir que estes estejam certos */
+		System.out.print("Chegada ? ");
+		int hc = in.nextInt(), mc = in.nextInt(), sc = in.nextInt();
+		int totalsp = hp * 3600 + mp * 60 + sp; // conversão dos dados introduzidos para segundos
+		int totalsc = hc * 3600 + mc * 60 + sc;
+		int diffs = totalsc - totalsp;
 		
-		System.out.print("Chegada? ");
-		int hc = in.nextInt();
-		int mc = in.nextInt();
-		int sc = in.nextInt();
-		
-		hc = hc - hp;
-		mc = mc - mp;
-		sc = sc - sp;
-		if (hc < 0 || (hc == 0 && mc < 0) || (hc == 0 && mc == 0 && sc == 0)) {
+		if(diffs < 0) {
 			System.out.println("Partida > Chegada");
 		} else {
-			if (mc < 0) {
-				mc += 60;
-				--hc;
-			}
-
-			if (sc < 0) {
-				sc += 60;
-				--mc;
-			}
-
-			System.out.print("Duração = " + hc + ":" + mc + ":" + sc);
+			int hf = (int) diffs / 3600; // Reposição de segundos para horas e minutos
+			diffs = diffs - 3600 * hf;
+			int mf = (int) diffs / 60;
+			diffs = diffs - 60 * mf;
+			System.out.println("Duração = " + hf + ":" + mf + ":" + diffs);
 		}
-	}
+  }
 }

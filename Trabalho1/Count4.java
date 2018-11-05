@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-public class Count4{
-	public static void main(String[] args){
+public class Count4 {
+	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		System.out.print("4 valores?");
 		int num1 = in.nextInt() ;
@@ -19,6 +19,6 @@ public class Count4{
 				else 
 					System.out.print("Iguais:0");
 
-		System.out.print(" Pares:" + par + " Impares" + imp);
+		System.out.print("Pares:" + par + " Impares" + imp);
 	}
 }
