@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Trabalho3:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Trabalho3_jar</output-path>
+    <root id="archive" name="Trabalho3.jar">
+      <element id="module-output" name="Trabalho3" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/ConsolePG.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
