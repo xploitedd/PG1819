@@ -37,6 +37,7 @@ public class Panel {
      * Print initial panel
      */
     public static void printGrid() {
+        clear();
         clearRect(0,0,BOARD_SIZE,BOARD_SIZE,DARK_GRAY);
         char name = '1';
         for (int p = 1; p <= BOARD_DIM*BOARD_DIM; p++) {
@@ -50,7 +51,7 @@ public class Panel {
             }
         }
         printLabel("Score",1); printScore(0);
-        printLabel("Level",4); printValue(1,5);
+        printLabel("Level",4); printLevel(1);
         clearArea();
     }
 
@@ -60,10 +61,35 @@ public class Panel {
         color(GRAY,BLACK);
         print(center(txt,SCORE_COLS));
     }
+
     private static void printValue(int value, int line) {
         cursor(BOARD_SIZE+line,COL_SCORE);
         color(WHITE,BLACK);
         print(center(""+value,SCORE_COLS));
+    }
+
+    public static String highScore(int score) {
+        clearBottom();
+        cursor(BOARD_SIZE + 1, 1);
+        color(WHITE, BLACK);
+        println("Congratulations!");
+        cursor(BOARD_SIZE + 2, 1);
+        println("New High Score: " + score);
+        cursor(BOARD_SIZE + 3, 1);
+        print("Name: ");
+        String name = nextLine(12);
+        clearBottom();
+        return name;
+    }
+
+    public static boolean continuePlaying() {
+        clearBottom();
+        cursor(BOARD_SIZE + 1, 1);
+        color(WHITE, BLACK);
+        print("Play Again (Y/N) : ");
+        char c = waitChar(10000);
+        clearBottom();
+        return c == 'Y' || c == 'y';
     }
 
     /**
@@ -148,6 +174,8 @@ public class Panel {
     private static final void clearArea() {
         clearRect(LINE_MESSAGE,COL_MESSAGE,GRID_SIZE,LEN_MESSAGE,BLACK);
     }
+
+    private static final void clearBottom() { clearRect(BOARD_SIZE + 1, 1, 5, COLS, BLACK);}
 
     /**
      * Show the message

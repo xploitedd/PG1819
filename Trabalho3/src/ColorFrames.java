@@ -20,33 +20,40 @@ public class ColorFrames {
      * Flag to finish the game
      */
     private static boolean terminate = false;
-
+    private static boolean forceTerminate = false;
 
     public static void main(String[] args) {
         Panel.init();
         Panel.printMessage("Welcome");
-        System.out.println(9%4);
         playGame();
         Panel.printMessageAndWait("BYE");
         Panel.end();
     }
 
     private static void playGame() {
-        int key;
-        Board.resetBoard();
-        generatePiece();
-        printPiece();
         do {
-            key = Console.waitKeyPressed(5000);
-            if (key>0) {
-                processKey(key);
-                Console.waitKeyReleased(key);
-            } else Panel.printMessage(""); // Clear last message
-        } while( !terminate );
+            terminate = false;
+
+            int key;
+            Board.resetBoard();
+            generatePiece();
+            printPiece();
+            do {
+                key = Console.waitKeyPressed(5000);
+                if (key > 0) {
+                    processKey(key);
+                    Console.waitKeyReleased(key);
+                } else Panel.printMessage(""); // Clear last message
+            } while (!terminate && !forceTerminate);
+
+            if (terminate && Scoreboard.endGame())
+                break;
+
+        } while (!forceTerminate);
     }
 
     private static void processKey(int key) {
-        if (key == VK_ESCAPE) terminate = true;
+        if (key == VK_ESCAPE) forceTerminate = true;
         int gridNum = 0;
         if (key >= VK_1 && key <= VK_9)
             gridNum = key - VK_1 + 1;
@@ -75,8 +82,6 @@ public class ColorFrames {
 
         int maxFrames = Board.getMaxFramesPerSquare();
         if (maxFrames == 0) {
-            Panel.printMessage("Game;Over!;Press N;for new;game");
-            Console.sleep(20000);
             terminate = true;
             return;
         }

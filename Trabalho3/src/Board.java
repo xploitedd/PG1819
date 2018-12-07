@@ -3,6 +3,7 @@ import isel.leic.pg.Console;
 public class Board {
 
     private static final int[][] pieces = new int[ColorFrames.BOARD_PLACES][ColorFrames.FRAMES_DIM];
+    private static int pointsToAdd = 0;
 
     public static void setPieceInBoard(int[] piece, int pos) {
         for (int f = 0; f < ColorFrames.FRAMES_DIM; ++f) { // For each frame dimension
@@ -71,7 +72,7 @@ public class Board {
 
         if (f == ColorFrames.FRAMES_DIM) {
             clearGridPosition(pos);
-            Scoreboard.addPoints(ColorFrames.BOARD_DIM);
+            pointsToAdd += ColorFrames.BOARD_DIM;
         } else {
             for (int fr = 0; fr < ColorFrames.FRAMES_DIM; ++fr) {
                 int color = pcs[fr];
@@ -84,6 +85,9 @@ public class Board {
                 }
             }
         }
+
+        Scoreboard.addPoints(pointsToAdd);
+        pointsToAdd = 0;
     }
 
     private static void checkLine(int pos, int color) {
@@ -127,7 +131,7 @@ public class Board {
             for (int i = 0; i < ColorFrames.BOARD_DIM; ++i)
                 clearGridPositionColor(i * mp + pos, color);
 
-            Scoreboard.addPoints(ColorFrames.BOARD_DIM);
+            pointsToAdd += ColorFrames.BOARD_DIM;
         }
     }
 
@@ -148,7 +152,7 @@ public class Board {
     private static void clearGridPositionFrame(int pos, int frame) {
         int color = pieces[pos - 1][frame];
         if (color != ColorFrames.NO_FRAME) {
-            Console.sleep(100);
+            Console.sleep(200);
             Panel.clearFrame(frame, pos);
             pieces[pos - 1][frame] = ColorFrames.NO_FRAME;
         }
