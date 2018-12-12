@@ -4,7 +4,7 @@ public class Panel {
     // Colors used for frames [0..8]
     public static final int[] COLORS = { RED, GREEN, BLUE, YELLOW, CYAN, PINK, MAGENTA, WHITE, ORANGE };
 
-    private static final int
+    public static final int
         FRAMES_DIM = ColorFrames.FRAMES_DIM,
         BOARD_DIM = ColorFrames.BOARD_DIM,
         GRID_SIZE = FRAMES_DIM*2+1,
@@ -77,6 +77,7 @@ public class Panel {
         println("New High Score: " + score);
         cursor(BOARD_SIZE + 3, 1);
         print("Name: ");
+        clearAllChars();
         String name = nextLine(12);
         clearBottom();
         return name;
@@ -86,10 +87,34 @@ public class Panel {
         clearBottom();
         cursor(BOARD_SIZE + 1, 1);
         color(WHITE, BLACK);
-        print("Play Again (Y/N) : ");
+        print("Play Again (Y/N)");
         char c = waitChar(10000);
         clearBottom();
         return c == 'Y' || c == 'y';
+    }
+
+    public static void printScoreboard(Player[] scoreboard) {
+        clearBottom();
+        int nextLine = BOARD_SIZE + 1, nextCol = 1, max = 0;
+        for (Player p : scoreboard) {
+            if (p == null || nextCol > COLS)
+                break;
+
+            if (nextLine + 2 > LINES) {
+                nextLine = BOARD_SIZE + 1;
+                nextCol = max + 1;
+            }
+
+            String text = p.score + ":" + p.playerName;
+            int len = text.length();
+            if (len + nextCol > max)
+                max = len + nextCol;
+
+            cursor(nextLine, nextCol);
+            color(WHITE, BLACK);
+            print(text);
+            ++nextLine;
+        }
     }
 
     /**
@@ -175,7 +200,7 @@ public class Panel {
         clearRect(LINE_MESSAGE,COL_MESSAGE,GRID_SIZE,LEN_MESSAGE,BLACK);
     }
 
-    private static final void clearBottom() { clearRect(BOARD_SIZE + 1, 1, 5, COLS, BLACK);}
+    private static final void clearBottom() { clearRect(BOARD_SIZE, 1, STATUS_LINES - 1, COLS, BLACK);}
 
     /**
      * Show the message

@@ -2,8 +2,10 @@ import isel.leic.pg.Console;
 
 public class Scoreboard {
 
+    private static final int SAVE_HIGHEST_SCORES = 10;
+
     private static final int[] levelScores = { 25, 50, 100, 200, 400 };
-    public static Player highestScore;
+    private static final Player[] highestScores = new Player[SAVE_HIGHEST_SCORES];
 
     private static int score = 0;
     private static byte level = 1;
@@ -25,15 +27,18 @@ public class Scoreboard {
     }
 
     public static int getMaxColors() {
-        return 9;
+        return level + 3;
     }
 
     public static boolean endGame() {
-        if (highestScore == null || highestScore.score <= score) {
+        int hsIndex = hasNewHighScore();
+        if (hsIndex != -1) {
             String name = Panel.highScore(score);
-            highestScore = new Player(name, score);
-            //Panel.printMessage("HS: " + highestScore.playerName);
+            highestScores[hsIndex] = new Player(name, score);
         }
+
+        Panel.printScoreboard(highestScores);
+        Console.sleep(2000);
 
         if (Panel.continuePlaying()) {
             Scoreboard.reset();
@@ -48,6 +53,24 @@ public class Scoreboard {
         score = 0;
         level = 1;
         Panel.printLevel(1);
+    }
+
+    private static int hasNewHighScore() {
+        for (int i = 0; i < highestScores.length; ++i) {
+            if (highestScores[i] == null) {
+                return i;
+            } else if (highestScores[i].score < score) {
+                for (int j = highestScores.length - 1; j > i; --j) {
+                    Player p = highestScores[j - 1];
+                    if (p != null)
+                        highestScores[j] = p;
+                }
+
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private static void nextLevel() {

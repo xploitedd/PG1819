@@ -1,4 +1,6 @@
 import isel.leic.pg.Console;
+import isel.leic.pg.Location;
+import isel.leic.pg.MouseEvent;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -32,6 +34,7 @@ public class ColorFrames {
 
     private static void playGame() {
         do {
+            long time = System.currentTimeMillis();
             terminate = false;
 
             int key;
@@ -39,21 +42,19 @@ public class ColorFrames {
             generatePiece();
             printPiece();
             do {
-                key = Console.waitKeyPressed(5000);
+                key = Console.waitKeyPressed(1000);
                 if (key > 0) {
                     processKey(key);
                     Console.waitKeyReleased(key);
-                } else Panel.printMessage(""); // Clear last message
+                } else if (key == Console.MOUSE_EVENT) {
+                    processMouseEvent();
+                } else Panel.printMessage("");
             } while (!terminate && !forceTerminate);
-
-            if (terminate && Scoreboard.endGame())
-                break;
-
-        } while (!forceTerminate);
+        } while (!forceTerminate && !Scoreboard.endGame());
     }
 
     private static void processKey(int key) {
-        if (key == VK_ESCAPE) forceTerminate = true;
+        if (key == VK_ESCAPE) terminate = true;
         int gridNum = 0;
         if (key >= VK_1 && key <= VK_9)
             gridNum = key - VK_1 + 1;
@@ -64,6 +65,33 @@ public class ColorFrames {
 
         if (gridNum >= 1 && gridNum <= BOARD_PLACES)
             putPieceInBoard(gridNum);
+    }
+
+    private static void processMouseEvent() {
+        Location loc = Console.getMouseEvent(MouseEvent.CLICK);
+        if (loc == null)
+            return;
+
+        int x = loc.col;
+        int y = loc.line;
+        for (int i = 0; i < BOARD_DIM; ++i) {
+            int minx = i * (Panel.GRID_SIZE + 1) + 1;
+            int maxx = minx + Panel.GRID_SIZE - 1;
+
+            int j = 0;
+            for (; j < BOARD_DIM; ++j) {
+                int miny = j * (Panel.GRID_SIZE + 1) + 1;
+                int maxy = miny + Panel.GRID_SIZE - 1;
+
+                if (x >= minx && x <= maxx && y >= miny && y <= maxy) {
+                    putPieceInBoard(i + j + (BOARD_PLACES - BOARD_DIM + 1) - (BOARD_DIM + 1) * j);
+                    break;
+                }
+            }
+
+            if (j != BOARD_DIM)
+                break;
+        }
     }
 
     private static void putPieceInBoard(int gridNum) {

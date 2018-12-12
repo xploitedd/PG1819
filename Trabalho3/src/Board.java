@@ -130,8 +130,6 @@ public class Board {
         if (p == ColorFrames.BOARD_DIM) {
             for (int i = 0; i < ColorFrames.BOARD_DIM; ++i)
                 clearGridPositionColor(i * mp + pos, color);
-
-            pointsToAdd += ColorFrames.BOARD_DIM;
         }
     }
 
@@ -161,8 +159,10 @@ public class Board {
     private static void clearGridPositionColor(int pos, int color) {
         for (int f = 0; f < ColorFrames.FRAMES_DIM; ++f) {
             int cl = pieces[pos - 1][f];
-            if (cl == color)
+            if (cl == color) {
                 clearGridPositionFrame(pos, f);
+                ++pointsToAdd;
+            }
         }
     }
 }
