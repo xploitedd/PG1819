@@ -63,7 +63,7 @@ public class ColorFrames {
      * @param key Key to be processed
      */
     private static void processKey(int key) {
-        if (key == VK_ESCAPE) terminate = true;
+        if (key == VK_ESCAPE) forceTerminate = true;
         int gridNum = 0;
         if (key >= VK_1 && key <= VK_9)
             gridNum = key - VK_1 + 1;
