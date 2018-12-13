@@ -5,6 +5,11 @@ public class Board {
     private static final int[][] pieces = new int[ColorFrames.BOARD_PLACES][ColorFrames.FRAMES_DIM];
     private static int pointsToAdd = 0;
 
+    /**
+     * Places a piece in the board
+     * @param piece Piece to be placed in board
+     * @param pos Board position to place the piece
+     */
     public static void setPieceInBoard(int[] piece, int pos) {
         for (int f = 0; f < ColorFrames.FRAMES_DIM; ++f) { // For each frame dimension
             int color = piece[f];
@@ -18,6 +23,9 @@ public class Board {
         checkGridPos(pos);
     }
 
+    /**
+     * Resets the board
+     */
     public static void resetBoard() {
         for (int i = 0; i < ColorFrames.BOARD_PLACES; ++i) {
             for (int j = 0; j < ColorFrames.FRAMES_DIM; ++j)
@@ -25,6 +33,12 @@ public class Board {
         }
     }
 
+    /**
+     * Check if the board has space for the piece
+     * @param piece Piece to be checked
+     * @param pos Position in the board where the piece will be placed
+     * @return True if it has space, false otherwise
+     */
     public static boolean hasSpaceForPiece(int[] piece, int pos) {
         for (int f = 0; f < piece.length; ++f) {
             int color = piece[f];
@@ -36,15 +50,28 @@ public class Board {
         return true;
     }
 
-    public static boolean isFrameAvailable(int frame) {
-        for (int b = 0; b < ColorFrames.BOARD_PLACES; ++b) {
-            if (pieces[b][frame] == ColorFrames.NO_FRAME)
+    /**
+     * Checks if the piece is available
+     * @param piece Piece to be checked
+     * @return True if it is available, false otherwise
+     */
+    public static boolean isPieceAvailable(int[] piece) {
+        /* Before this was checking if a frame was available,
+           but now it's checking for the whole piece since the method
+           implemented before could give bugs */
+
+        for (int b = 1; b <= ColorFrames.BOARD_PLACES; ++b) {
+            if (hasSpaceForPiece(piece, b))
                 return true;
         }
 
         return false;
     }
 
+    /**
+     * Calculate the max number of frames that can be placed into the board
+     * @return The maximum number of frames
+     */
     public static int getMaxFramesPerSquare() {
         int max = 0;
         for (int b = 0; b < ColorFrames.BOARD_PLACES; ++b) {
@@ -61,6 +88,10 @@ public class Board {
         return max;
     }
 
+    /**
+     * Checks a position of the grid for lines, columns and diagonals that have the same color
+     * @param pos Position to be checked
+     */
     private static void checkGridPos(int pos) {
         int[] pcs = pieces[pos - 1];
         int f = 0;
@@ -90,6 +121,11 @@ public class Board {
         pointsToAdd = 0;
     }
 
+    /**
+     * Check if a certain color forms a line
+     * @param pos Position where we want to check
+     * @param color Color we want to check
+     */
     private static void checkLine(int pos, int color) {
         int ppos = pos;
         while ((pos - 1) % ColorFrames.BOARD_DIM > 0 && pos > 1)
@@ -98,6 +134,11 @@ public class Board {
         check(pos, ppos, 1, color);
     }
 
+    /**
+     * Check if a certain color forms a column
+     * @param pos Position where we want to check
+     * @param color Color we want to check
+     */
     private static void checkColumn(int pos, int color) {
         int ppos = pos;
         while (pos - ColorFrames.BOARD_DIM > 0)
@@ -106,11 +147,23 @@ public class Board {
         check(pos, ppos, ColorFrames.BOARD_DIM, color);
     }
 
+    /**
+     * Check if a certain color forms a diagonal
+     * @param pos Position where we want to check
+     * @param color Color we want to check
+     */
     private static void checkDiagonals(int pos, int color) {
         check(1, pos, ColorFrames.BOARD_DIM + 1, color);
         check(ColorFrames.BOARD_DIM, pos, ColorFrames.BOARD_DIM - 1, color);
     }
 
+    /**
+     * Checks a position base on its multiplier and the first element of the column, line or diagonal
+     * @param pos First element of the line, column or diagonal
+     * @param ppos Current position
+     * @param mp Multiplier that indicates how much it's going to add between positions
+     * @param color Color to be checked
+     */
     private static void check(int pos, int ppos, int mp, int color) {
         int p = 0;
         for (; p < ColorFrames.BOARD_DIM; ++p) {
@@ -133,6 +186,11 @@ public class Board {
         }
     }
 
+    /**
+     * Checks if a position is in a diagonal
+     * @param pos Position to be checked
+     * @return True if it's in a diagonal, false otherwise
+     */
     private static boolean isInDiagonal(int pos) {
         for (int i = 0; i < ColorFrames.BOARD_DIM; ++i) {
             if (1 + i * (ColorFrames.BOARD_DIM + 1) == pos || ColorFrames.BOARD_DIM + i * (ColorFrames.BOARD_DIM - 1) == pos)
@@ -142,11 +200,20 @@ public class Board {
         return false;
     }
 
+    /**
+     * Clears a grid position
+     * @param pos Position to be cleared
+     */
     private static void clearGridPosition(int pos) {
         for (int f = 0; f < ColorFrames.FRAMES_DIM; ++f)
             clearGridPositionFrame(pos, f);
     }
 
+    /**
+     * Clears a frame in a position
+     * @param pos Position where the frame is
+     * @param frame Frame to be cleared
+     */
     private static void clearGridPositionFrame(int pos, int frame) {
         int color = pieces[pos - 1][frame];
         if (color != ColorFrames.NO_FRAME) {
@@ -155,7 +222,12 @@ public class Board {
             pieces[pos - 1][frame] = ColorFrames.NO_FRAME;
         }
     }
-    
+
+    /**
+     * Clears all frames that have the specified color in a position
+     * @param pos Position where the frames will be checked
+     * @param color Color to be cleared
+     */
     private static void clearGridPositionColor(int pos, int color) {
         for (int f = 0; f < ColorFrames.FRAMES_DIM; ++f) {
             int cl = pieces[pos - 1][f];

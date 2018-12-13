@@ -32,17 +32,22 @@ public class ColorFrames {
         Panel.end();
     }
 
+    /**
+     * Initializes the game
+     */
     private static void playGame() {
         do {
-            long time = System.currentTimeMillis();
+            final long time = System.currentTimeMillis();
             terminate = false;
 
-            int key;
             Board.resetBoard();
             generatePiece();
             printPiece();
+
+            int key;
             do {
                 key = Console.waitKeyPressed(1000);
+                Panel.printTime((int) (System.currentTimeMillis() - time) / 1000);
                 if (key > 0) {
                     processKey(key);
                     Console.waitKeyReleased(key);
@@ -53,6 +58,10 @@ public class ColorFrames {
         } while (!forceTerminate && !Scoreboard.endGame());
     }
 
+    /**
+     * Processes a key stroke
+     * @param key Key to be processed
+     */
     private static void processKey(int key) {
         if (key == VK_ESCAPE) terminate = true;
         int gridNum = 0;
@@ -67,6 +76,9 @@ public class ColorFrames {
             putPieceInBoard(gridNum);
     }
 
+    /**
+     * Checks a mouse event
+     */
     private static void processMouseEvent() {
         Location loc = Console.getMouseEvent(MouseEvent.CLICK);
         if (loc == null)
@@ -94,6 +106,10 @@ public class ColorFrames {
         }
     }
 
+    /**
+     * Puts a piece in the board if it has space for it
+     * @param gridNum Grid square where the piece will be placed
+     */
     private static void putPieceInBoard(int gridNum) {
         if (Board.hasSpaceForPiece(piece, gridNum)) {
             Board.setPieceInBoard(piece, gridNum);
@@ -104,10 +120,10 @@ public class ColorFrames {
         }
     }
 
+    /**
+     * Generates a new piece
+     */
     private static void generatePiece() {
-        for (int f = 0; f < FRAMES_DIM; ++f)  // Removes all frames
-            piece[f] = NO_FRAME;
-
         int maxFrames = Board.getMaxFramesPerSquare();
         if (maxFrames == 0) {
             terminate = true;
@@ -115,14 +131,22 @@ public class ColorFrames {
         }
 
         int numOfFrames = 1 + (int) (Math.random() * (maxFrames - 1)); // Frames to generate
-        for(int i = 0 ; i < numOfFrames ; ++i) {
-            int frameSize;
-            do frameSize = (int) (Math.random() * FRAMES_DIM);
-            while (!Board.isFrameAvailable(frameSize) || piece[frameSize] != NO_FRAME);
-            piece[frameSize] = (int) (Math.random() * Scoreboard.getMaxColors());
-        }
+        do {
+            for (int f = 0; f < FRAMES_DIM; ++f)  // Removes all frames
+                piece[f] = NO_FRAME;
+
+            for(int i = 0 ; i < numOfFrames ; ++i) {
+                int frameSize;
+                do frameSize = (int) (Math.random() * FRAMES_DIM);
+                while (piece[frameSize] != NO_FRAME);
+                piece[frameSize] = (int) (Math.random() * Scoreboard.getMaxColors());
+            }
+        } while (!Board.isPieceAvailable(piece));
     }
 
+    /**
+     * Prints the new piece
+     */
     private static void printPiece() {
         for (int f = 0; f < FRAMES_DIM; ++f) { // For each frame dimension
             int color = piece[f];

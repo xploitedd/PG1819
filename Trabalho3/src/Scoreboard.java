@@ -10,6 +10,10 @@ public class Scoreboard {
     private static int score = 0;
     private static byte level = 1;
 
+    /**
+     * Adds the point dinamically to the score, and updates the level
+     * @param points Points to add
+     */
     public static void addPoints(int points) {
         if (points <= 0)
             return;
@@ -26,10 +30,18 @@ public class Scoreboard {
             nextLevel();
     }
 
+    /**
+     * Gets the max colors based on the level
+     * @return Max Colors
+     */
     public static int getMaxColors() {
         return level + 3;
     }
 
+    /**
+     * Ends the current game and display's the current scoreboard
+     * @return True if the player wants to play again, false otherwise
+     */
     public static boolean endGame() {
         int hsIndex = hasNewHighScore();
         if (hsIndex != -1) {
@@ -49,12 +61,20 @@ public class Scoreboard {
         return true;
     }
 
+    /**
+     * Resets the current score
+     */
     public static void reset() {
         score = 0;
         level = 1;
         Panel.printLevel(1);
     }
 
+    /**
+     * Check if the player has a new high score and, if needed, moves the current
+     * scoreboard players to make space
+     * @return The index where the new player will be added
+     */
     private static int hasNewHighScore() {
         for (int i = 0; i < highestScores.length; ++i) {
             if (highestScores[i] == null) {
@@ -73,6 +93,9 @@ public class Scoreboard {
         return -1;
     }
 
+    /**
+     * Updates the level
+     */
     private static void nextLevel() {
         Panel.printLevel(++level);
     }

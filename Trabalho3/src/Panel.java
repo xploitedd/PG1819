@@ -78,7 +78,7 @@ public class Panel {
         cursor(BOARD_SIZE + 3, 1);
         print("Name: ");
         clearAllChars();
-        String name = nextLine(12);
+        String name = nextLine(5);
         clearBottom();
         return name;
     }
@@ -88,6 +88,7 @@ public class Panel {
         cursor(BOARD_SIZE + 1, 1);
         color(WHITE, BLACK);
         print("Play Again (Y/N)");
+        clearAllChars();
         char c = waitChar(10000);
         clearBottom();
         return c == 'Y' || c == 'y';
@@ -95,13 +96,17 @@ public class Panel {
 
     public static void printScoreboard(Player[] scoreboard) {
         clearBottom();
-        int nextLine = BOARD_SIZE + 1, nextCol = 1, max = 0;
+        color(WHITE, BLACK);
+        cursor(BOARD_SIZE + 1, 1);
+        print("Top Scores:");
+
+        int nextLine = BOARD_SIZE + 2, nextCol = 1, max = 0;
         for (Player p : scoreboard) {
             if (p == null || nextCol > COLS)
                 break;
 
             if (nextLine + 2 > LINES) {
-                nextLine = BOARD_SIZE + 1;
+                nextLine = BOARD_SIZE + 2;
                 nextCol = max + 1;
             }
 
@@ -128,6 +133,13 @@ public class Panel {
      * @param level
      */
     public static void printLevel(int level) { printValue(level,5); }
+
+    public static void printTime(int time) {
+        int minutes = time / 60;
+        time %= 60;
+
+        printLabel(minutes + "m:" + time + "s",7);
+    }
 
     /**
      * Print one frame with the indicated size, color and position
