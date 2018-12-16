@@ -42,7 +42,6 @@ public class Board {
     public static boolean hasSpaceForPiece(int[] piece, int pos) {
         for (int f = 0; f < piece.length; ++f) {
             int color = piece[f];
-            // a posição do array é pos - 1 porque a pos varia entre [1..BOARD_PLACES]
             if (color != ColorFrames.NO_FRAME && pieces[pos - 1][f] != ColorFrames.NO_FRAME)
                 return false;
         }
@@ -93,6 +92,7 @@ public class Board {
      * @param pos Position to be checked
      */
     private static void checkGridPos(int pos) {
+        // Verifies if the colors in the position are all the same
         int[] pcs = pieces[pos - 1];
         int f = 0;
         for (; f < ColorFrames.FRAMES_DIM; ++f) {
@@ -102,9 +102,10 @@ public class Board {
         }
 
         if (f == ColorFrames.FRAMES_DIM) {
+            // If a piece is filled with one color only, then delete this piece
             clearGridPosition(pos);
-            pointsToAdd += ColorFrames.BOARD_DIM;
         } else {
+            // Verifies for lines, columns and diagonals that have colors different that NO_FRAME
             for (int fr = 0; fr < ColorFrames.FRAMES_DIM; ++fr) {
                 int color = pcs[fr];
                 if (color != ColorFrames.NO_FRAME) {
@@ -220,6 +221,7 @@ public class Board {
             Console.sleep(200);
             Panel.clearFrame(frame, pos);
             pieces[pos - 1][frame] = ColorFrames.NO_FRAME;
+            ++pointsToAdd;
         }
     }
 
@@ -233,7 +235,6 @@ public class Board {
             int cl = pieces[pos - 1][f];
             if (cl == color) {
                 clearGridPositionFrame(pos, f);
-                ++pointsToAdd;
             }
         }
     }

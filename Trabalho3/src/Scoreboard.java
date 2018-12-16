@@ -8,10 +8,10 @@ public class Scoreboard {
     private static final Player[] highestScores = new Player[SAVE_HIGHEST_SCORES];
 
     private static int score = 0;
-    private static byte level = 1;
+    private static byte level = 0;
 
     /**
-     * Adds the point dinamically to the score, and updates the level
+     * Adds the point dynamically to the score, and updates the level
      * @param points Points to add
      */
     public static void addPoints(int points) {
@@ -20,12 +20,14 @@ public class Scoreboard {
 
         Panel.printMessage("+" + points + ";points");
 
+        // dynamic effect to add points
         for (int i = 1; i <= points; ++i) {
             ++score;
             Panel.printScore(score);
             Console.sleep(50);
         }
 
+        // updates the level if the score is enough
         if (level != 6 && score > levelScores[level - 1])
             nextLevel();
     }
@@ -44,20 +46,23 @@ public class Scoreboard {
      */
     public static boolean endGame() {
         int hsIndex = hasNewHighScore();
+        // if the player has a new high score then hsIndex will be different from -1
         if (hsIndex != -1) {
             String name = Panel.highScore(score);
             highestScores[hsIndex] = new Player(name, score);
         }
 
+        // prints the highest scores table for 2s
         Panel.printScoreboard(highestScores);
         Console.sleep(2000);
 
+        // asks the player whether the game should reset
         if (Panel.continuePlaying()) {
-            Scoreboard.reset();
             Panel.printGrid();
             return false;
         }
 
+        Console.stopMusic();
         return true;
     }
 
@@ -65,17 +70,20 @@ public class Scoreboard {
      * Resets the current score
      */
     public static void reset() {
+        Console.stopMusic();
+
         score = 0;
-        level = 1;
-        Panel.printLevel(1);
+        level = 0;
+        nextLevel();
     }
 
     /**
-     * Check if the player has a new high score and, if needed, moves the current
-     * scoreboard players to make space
+     * Check if the player has a new high score and, if needed, sorts the scoreboard
+     * for the new player
      * @return The index where the new player will be added
      */
     private static int hasNewHighScore() {
+        // uses one iteration of insertion sort to add the player if needed
         for (int i = 0; i < highestScores.length; ++i) {
             if (highestScores[i] == null) {
                 return i;
@@ -98,5 +106,13 @@ public class Scoreboard {
      */
     private static void nextLevel() {
         Panel.printLevel(++level);
+        if (level == 1) {
+            // plays music1 from level 1 to 5
+            Console.startMusic("music1");
+        } else if (level == 6) {
+            // starts playing music2 when player reaches level 6
+            Console.stopMusic();
+            Console.startMusic("music2");
+        }
     }
 }

@@ -40,14 +40,16 @@ public class ColorFrames {
             final long time = System.currentTimeMillis();
             terminate = false;
 
+            Scoreboard.reset();
             Board.resetBoard();
             generatePiece();
             printPiece();
 
             int key;
             do {
-                key = Console.waitKeyPressed(1000);
+                // Sometimes it does not update every second due to the effects
                 Panel.printTime((int) (System.currentTimeMillis() - time) / 1000);
+                key = Console.waitKeyPressed(1000);
                 if (key > 0) {
                     processKey(key);
                     Console.waitKeyReleased(key);

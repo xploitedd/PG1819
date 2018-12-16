@@ -8,7 +8,7 @@ public class Panel {
         FRAMES_DIM = ColorFrames.FRAMES_DIM,
         BOARD_DIM = ColorFrames.BOARD_DIM,
         GRID_SIZE = FRAMES_DIM*2+1,
-        STATUS_LINES = Math.max(GRID_SIZE,4)+2,
+        STATUS_LINES = Math.max(GRID_SIZE,7)+2,
         SCORE_COLS = 6,
         MESSAGE_COLS = 6,
         BOARD_SIZE = (GRID_SIZE+1) * BOARD_DIM +1,
@@ -112,7 +112,9 @@ public class Panel {
 
             String text = p.score + ":" + p.playerName;
             int len = text.length();
-            if (len + nextCol > max)
+            if (len + nextCol > COLS)
+                break;
+            else if (len + nextCol > max)
                 max = len + nextCol;
 
             cursor(nextLine, nextCol);
