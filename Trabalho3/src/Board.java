@@ -173,7 +173,7 @@ public class Board {
                 int f = 0;
                 for (; f < ColorFrames.FRAMES_DIM; ++f) {
                     if (pieces[ps - 1][f] == color)
-                        break;
+                        break; // when a piece doesn't have the specified color
                 }
 
                 if (f == ColorFrames.FRAMES_DIM)
@@ -181,6 +181,8 @@ public class Board {
             }
         }
 
+        /* if has a line, column or diagonal with frames that have the same color
+            clears those frames */
         if (p == ColorFrames.BOARD_DIM) {
             for (int i = 0; i < ColorFrames.BOARD_DIM; ++i)
                 clearGridPositionColor(i * mp + pos, color);
@@ -216,6 +218,7 @@ public class Board {
      * @param frame Frame to be cleared
      */
     private static void clearGridPositionFrame(int pos, int frame) {
+        // clears the frames with 200ms interval between each and adds a point
         int color = pieces[pos - 1][frame];
         if (color != ColorFrames.NO_FRAME) {
             Console.sleep(200);

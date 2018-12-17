@@ -68,6 +68,11 @@ public class Panel {
         print(center(""+value,SCORE_COLS));
     }
 
+    /**
+     * Displays the score and asks for a name to save it to the scoreboard
+     * @param score Score to be saved
+     * @return the name of the player
+     */
     public static String highScore(int score) {
         clearBottom();
         cursor(BOARD_SIZE + 1, 1);
@@ -83,6 +88,10 @@ public class Panel {
         return name;
     }
 
+    /**
+     * Asks the player if the game should end
+     * @return True if the player wants to start over, false otherwise
+     */
     public static boolean continuePlaying() {
         clearBottom();
         cursor(BOARD_SIZE + 1, 1);
@@ -94,6 +103,10 @@ public class Panel {
         return c == 'Y' || c == 'y';
     }
 
+    /**
+     * Displays a scoreboard on the bottom side of the window
+     * @param scoreboard Scoreboard to be displayed
+     */
     public static void printScoreboard(Player[] scoreboard) {
         clearBottom();
         color(WHITE, BLACK);

@@ -38,8 +38,9 @@ public class ColorFrames {
     private static void playGame() {
         do {
             final long time = System.currentTimeMillis();
-            terminate = false;
+            terminate = false; // if we don't reset this will be a loop
 
+            // resets everything else and prints a new piece
             Scoreboard.reset();
             Board.resetBoard();
             generatePiece();
@@ -84,19 +85,22 @@ public class ColorFrames {
     private static void processMouseEvent() {
         Location loc = Console.getMouseEvent(MouseEvent.CLICK);
         if (loc == null)
-            return;
+            return; // if there's no event then return to avoid NullPointerException
 
         int x = loc.col;
         int y = loc.line;
         for (int i = 0; i < BOARD_DIM; ++i) {
+            // calculate the minimum x for the column and the maximum
             int minx = i * (Panel.GRID_SIZE + 1) + 1;
             int maxx = minx + Panel.GRID_SIZE - 1;
 
             int j = 0;
             for (; j < BOARD_DIM; ++j) {
+                // calculate the minimum y for the line and the maximum
                 int miny = j * (Panel.GRID_SIZE + 1) + 1;
                 int maxy = miny + Panel.GRID_SIZE - 1;
 
+                // if the mouse is within minimums and maximums
                 if (x >= minx && x <= maxx && y >= miny && y <= maxy) {
                     putPieceInBoard(i + j + (BOARD_PLACES - BOARD_DIM + 1) - (BOARD_DIM + 1) * j);
                     break;
